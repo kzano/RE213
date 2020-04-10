@@ -1,0 +1,318 @@
+swagger: "2.0"
+info:
+  description: "API permettant de connaître les statistiques d'un joueur sur Overwatch.\n[RSI2] Ortenzi & Aubourg"
+  version: "1.0.0"
+  title: "Overwatch API"
+host: "localhost:3000"
+
+tags:
+- name: "Profile"
+  description: "Consulter le profil général d'un joueur"
+- name: "Quickplay"
+  description: "Consulter ou sauvegarder le profil parties rapides d'un joueur"
+- name: "Ranked"
+  description: "Consulter ou sauvegarder le profil compétitif d'un joueur"
+- name: "History"
+  description: "Consulter l'historique ranked/quickplay d'un joueur"
+schemes:
+- "http"
+
+definitions:
+  Profile:
+    type: "object"
+    properties:
+      gamesWon:
+        type: "number"
+        example: 129
+      icon:
+        type: "string"
+        example: "https://d15f34w2p8l1cc.cloudfront.net/overwatch/efb3fa31f0c7a141928da914bc566753aaeb80c07067c10ee8d9a52ed28e4176.png"
+      level:
+        type: "number"
+        example: 62
+      name:
+        type: "string"
+        example: "Kzany#8706"
+      quickplay:
+        type: "string"
+        example: "18:00:11"
+      ranked:
+        type: "string"
+        example: "05:29:53"
+  Ranked:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "Kzany#8706"
+      icon:
+        type: "string"
+        example: "https://d15f34w2p8l1cc.cloudfront.net/overwatch/efb3fa31f0c7a141928da914bc566753aaeb80c07067c10ee8d9a52ed28e4176.png"
+      nbCards:
+        type: "number"
+        example: 8
+      nbMedals:
+        type: "number"
+        example: 94
+      nbMedalsBronze:
+        type: "number"
+        example: 29
+      nbMedalsSilver:
+        type: "number"
+        example: 37
+      nbMedalsGold:
+        type: "number"
+        example: 28
+      bestDamage:
+        type: "number"
+        example: 26433
+      bestKills:
+        type: "number"
+        example: 43
+      bestEnvKills:
+        type: "number"
+        example: 2
+      bestHeal:
+        type: "number"
+        example: 20456
+      bestKillsStreak:
+        type: "number"
+        example: 24
+      bestMultiKills:
+        type: "number"
+        example: 4
+      bestObjectiveKills:
+        type: "number"
+        example: 34
+      bestObjectiveTime:
+        type: "string"
+        example: "03:36"
+      bestTimeOnFire:
+        type: "string"
+        example: "10:34"
+      timePlayed:
+        type: "string"
+        example: "05:29:53"
+      gamesPlayed:
+        type: "number"
+        example: 31
+      gamesTied:
+        type: "number"
+        example: 1
+      gamesLost:
+        type: "number"
+        example: 14
+      gamesWon:
+        type: "number"
+        example: 16
+      rating:
+        type: "number"
+        example: 1667
+      ratingIcon:
+        type: "string"
+        example: "https://d1u1mce87gyfbn.cloudfront.net/game/rank-icons/rank-SilverTier.png"
+  Quickplay:
+    type: "object"
+    properties:
+      name:
+        type: "string"
+        example: "Kzany#8706"
+      icon:
+        type: "string"
+        example: "https://d15f34w2p8l1cc.cloudfront.net/overwatch/efb3fa31f0c7a141928da914bc566753aaeb80c07067c10ee8d9a52ed28e4176.png"
+      nbCards:
+        type: "number"
+        example: 157
+      nbMedals:
+        type: "number"
+        example: 1013
+      nbMedalsBronze:
+        type: "number"
+        example: 293
+      nbMedalsSilver:
+        type: "number"
+        example: 342
+      nbMedalsGold:
+        type: "number"
+        example: 378
+      bestDamage:
+        type: "number"
+        example: 16523
+      bestKills:
+        type: "number"
+        example: 39
+      bestEnvKills:
+        type: "number"
+        example: 10
+      bestHeal:
+        type: "number"
+        example: 11518
+      bestKillsStreak:
+        type: "number"
+        example: 39
+      bestMultiKills:
+        type: "number"
+        example: 5
+      bestObjectiveKills:
+        type: "number"
+        example: 25
+      bestObjectiveTime:
+        type: "string"
+        example: "05:09"
+      bestTimeOnFire:
+        type: "string"
+        example: "07:45"
+      timePlayed:
+        type: "string"
+        example: "49:12:09"
+      gamesWon:
+        type: "number"
+        example: 207
+
+paths:
+  /profile/{platform}/{region}/{pseudo}:
+    get:
+      tags:
+      - "Profile"
+      summary: "Consulter le profil général du joueur"
+      description: ""
+      parameters:
+        - in: path
+          name: platform
+          type: "string"
+          required: true
+          description: Plateforme utilisée par le joueur (pc, xbl, psn)
+        - in: path
+          name: region
+          type: "string"
+          required: true
+          description: Region du joueur (eu, us, cn, kr, global)
+        - in: path
+          name: pseudo
+          type: "string"
+          required: true
+          description: Battletag, Gamertag ou pseudo PSN du joueur
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Profile"
+        400:
+          description: "Bad tag"
+        404:
+          description: "Player not found"
+
+  /quickplay/{platform}/{region}/{pseudo}:
+    get:
+      tags:
+      - "Quickplay"
+      summary: "Consulter le profil partie rapide du joueur"
+      description: ""
+      parameters:
+        - in: path
+          name: platform
+          type: "string"
+          required: true
+          description: Plateforme utilisée par le joueur (pc, xbl, psn)
+        - in: path
+          name: region
+          type: "string"
+          required: true
+          description: Region du joueur (eu, us, cn, kr, global)
+        - in: path
+          name: pseudo
+          type: "string"
+          required: true
+          description: Battletag, Gamertag ou pseudo PSN du joueur
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Quickplay"
+        400:
+          description: "Bad tag"
+        404:
+          description: "Player not found"
+
+  /ranked/{platform}/{region}/{pseudo}:
+    get:
+      tags:
+      - "Ranked"
+      summary: "Consulter le profil compétitif du joueur"
+      description: ""
+      parameters:
+        - in: path
+          name: platform
+          type: "string"
+          required: true
+          description: Plateforme utilisée par le joueur (pc, xbl, psn)
+        - in: path
+          name: region
+          type: "string"
+          required: true
+          description: Region du joueur (eu, us, cn, kr, global)
+        - in: path
+          name: pseudo
+          type: "string"
+          required: true
+          description: Battletag, Gamertag ou pseudo PSN du joueur
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Ranked"
+        400:
+          description: "Bad tag"
+        404:
+          description: "Player not found"
+        409:
+          description: "Empty"
+
+  /history/{platform}/{region}/{pseudo}/{type}:
+    get:
+      tags:
+      - "History"
+      summary: "Consulter le profil compétitif du joueur"
+      description: ""
+      parameters:
+        - in: path
+          name: platform
+          type: "string"
+          required: true
+          description: Plateforme utilisée par le joueur (pc, xbl, psn)
+        - in: path
+          name: region
+          type: "string"
+          required: true
+          description: Region du joueur (eu, us, cn, kr, global)
+        - in: path
+          name: pseudo
+          type: "string"
+          required: true
+          description: Battletag, Gamertag ou pseudo PSN du joueur
+        - in: path
+          name: type
+          type: "string"
+          required: true
+          description: Type de partie (ranked/quickplay)
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "OK"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/Profile"
