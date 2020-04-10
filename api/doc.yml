@@ -12,8 +12,6 @@ tags:
   description: "Consulter ou sauvegarder le profil parties rapides d'un joueur"
 - name: "Ranked"
   description: "Consulter ou sauvegarder le profil compétitif d'un joueur"
-- name: "History"
-  description: "Consulter l'historique ranked/quickplay d'un joueur"
 schemes:
 - "http"
 
@@ -279,40 +277,3 @@ paths:
           description: "Player not found"
         409:
           description: "Empty"
-
-  /history/{platform}/{region}/{pseudo}/{type}:
-    get:
-      tags:
-      - "History"
-      summary: "Consulter le profil compétitif du joueur"
-      description: ""
-      parameters:
-        - in: path
-          name: platform
-          type: "string"
-          required: true
-          description: Plateforme utilisée par le joueur (pc, xbl, psn)
-        - in: path
-          name: region
-          type: "string"
-          required: true
-          description: Region du joueur (eu, us, cn, kr, global)
-        - in: path
-          name: pseudo
-          type: "string"
-          required: true
-          description: Battletag, Gamertag ou pseudo PSN du joueur
-        - in: path
-          name: type
-          type: "string"
-          required: true
-          description: Type de partie (ranked/quickplay)
-      produces:
-      - "application/json"
-      responses:
-        200:
-          description: "OK"
-          schema:
-            type: "array"
-            items:
-              $ref: "#/definitions/Profile"
